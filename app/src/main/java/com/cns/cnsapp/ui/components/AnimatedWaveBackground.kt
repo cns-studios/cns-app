@@ -17,7 +17,6 @@ import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
-import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.cns.cnsapp.ui.theme.CNSAppTheme
@@ -43,8 +42,8 @@ fun AnimatedWaveBackground(
         initialValue = 0f,
         targetValue = 1f,
         animationSpec = infiniteRepeatable(
-            animation = tween(durationMillis = 12000, easing = LinearEasing),
-            repeatMode = RepeatMode.Restart,
+            animation = tween(durationMillis = 8000, easing = LinearEasing),
+            repeatMode = RepeatMode.Reverse,
         ),
     )
 
@@ -77,7 +76,9 @@ fun AnimatedWaveBackground(
                 val screenX = -drawExtra + t * drawSpan
                 val waveX = screenX + pixelShift
                 val phase = waveX / cycleWidth * TWO_PI
-                val y = baseY + sin(phase) * amp
+                val envPhase = screenX / cycleWidth * TWO_PI * 0.85f
+                val ampFactor = 1.0f + 0.6f * sin(envPhase)
+                val y = baseY + sin(phase) * amp * ampFactor
                 wavePath.lineTo(screenX, y)
             }
 
