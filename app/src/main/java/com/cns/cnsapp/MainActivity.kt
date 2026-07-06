@@ -27,6 +27,7 @@ import com.cns.cnsapp.ui.components.NavFooter
 import com.cns.cnsapp.ui.navigation.SubScreen
 import com.cns.cnsapp.ui.screens.ConnectedAppsScreen
 import com.cns.cnsapp.ui.screens.HomeScreen
+import com.cns.cnsapp.ui.screens.NewRequestsScreen
 import com.cns.cnsapp.ui.screens.RecentActivitiesScreen
 import com.cns.cnsapp.ui.theme.CNSAppTheme
 import com.cns.cnsapp.ui.theme.GoogleSansFlex
@@ -56,6 +57,11 @@ class MainActivity : ComponentActivity() {
                         }
                         SubScreen.ConnectedApps -> {
                             ConnectedAppsScreen(
+                                onBack = { subScreen = null },
+                            )
+                        }
+                        SubScreen.NewRequests -> {
+                            NewRequestsScreen(
                                 onBack = { subScreen = null },
                             )
                         }

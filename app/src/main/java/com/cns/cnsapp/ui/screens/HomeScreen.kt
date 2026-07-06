@@ -212,6 +212,7 @@ fun HomeScreen(
             ExtendedCollapsedCard(
                 title = "New requests",
                 subtitle = "2 new requests",
+                onClick = { onNavigate(SubScreen.NewRequests) },
             )
         }
     }
@@ -221,7 +222,10 @@ fun HomeScreen(
 private fun ExtendedCollapsedCard(
     title: String,
     subtitle: String,
+    onClick: (() -> Unit)? = null,
 ) {
+    val view = LocalView.current
+
     Card(
         modifier = Modifier
             .padding(horizontal = 0.dp)
@@ -234,6 +238,18 @@ private fun ExtendedCollapsedCard(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
+                .then(
+                    if (onClick != null) {
+                        Modifier.clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null,
+                            onClick = {
+                                view.performHapticFeedback(HapticFeedbackConstants.CONFIRM)
+                                onClick()
+                            },
+                        )
+                    } else Modifier
+                )
                 .padding(start = 18.dp, end = 18.dp, top = 18.dp, bottom = 18.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
