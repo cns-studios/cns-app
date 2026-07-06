@@ -28,7 +28,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -58,6 +61,8 @@ fun ConnectedAppsScreen(
     modifier: Modifier = Modifier,
 ) {
     val view = LocalView.current
+
+    var showDisconnectDialog by remember { mutableStateOf(false) }
 
     Box(
         modifier = modifier.fillMaxSize(),
@@ -236,7 +241,7 @@ fun ConnectedAppsScreen(
                     Spacer(modifier = Modifier.height(16.dp))
 
                     Button(
-                        onClick = { },
+                        onClick = { showDisconnectDialog = true },
                         shape = RoundedCornerShape(50),
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Color(0xFF4F4F4F),
@@ -262,5 +267,100 @@ fun ConnectedAppsScreen(
                 }
             }
         }
+
+        if (showDisconnectDialog) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Black.copy(alpha = 0.6f))
+                    .clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = null,
+                        onClick = { showDisconnectDialog = false },
+                    ),
+                contentAlignment = Alignment.Center,
+            ) {
+                Card(
+                    modifier = Modifier
+                        .padding(horizontal = 40.dp)
+                        .clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null,
+                            onClick = {},
+                        ),
+                    shape = RoundedCornerShape(24.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surface,
+                    ),
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(24.dp),
+                    ) {
+                        Text(
+                            text = "Are you sure?",
+                            fontFamily = GoogleSansFlex,
+                            fontWeight = FontWeight.SemiBold,
+                            fontSize = 22.sp,
+                            color = MaterialTheme.colorScheme.onSurface,
+                            modifier = Modifier.align(Alignment.CenterHorizontally),
+                        )
+
+                        Spacer(modifier = Modifier.height(12.dp))
+
+                        Text(
+                            text = "ShareIt will no longer have access to your account. This will delete all stored data by ShareIt permanently. You may loose access to this service, you can reconnect everytime.",
+                            fontFamily = GoogleSansFlex,
+                            fontWeight = FontWeight.Normal,
+                            fontSize = 15.sp,
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
+                        )
+
+                        Spacer(modifier = Modifier.height(30.dp))
+
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(12.dp),
+                        ) {
+                            Button(
+                                onClick = { showDisconnectDialog = false },
+                                shape = RoundedCornerShape(24),
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = Color(0xFF3A3A3A),
+                                ),
+                                modifier = Modifier.weight(1f),
+                            ) {
+                                Text(
+                                    text = "Cancel",
+                                    fontFamily = GoogleSansFlex,
+                                    fontWeight = FontWeight.Normal,
+                                    fontSize = 16.sp,
+                                    color = Color.White,
+                                )
+                            }
+
+                            Button(
+                                onClick = { },
+                                shape = RoundedCornerShape(24),
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = Color(0xFFB11818),
+                                ),
+                                modifier = Modifier.weight(1f),
+                            ) {
+                                Text(
+                                    text = "Confirm",
+                                    fontFamily = GoogleSansFlex,
+                                    fontWeight = FontWeight.Normal,
+                                    fontSize = 16.sp,
+                                    color = Color.White,
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
+
