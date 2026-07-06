@@ -21,7 +21,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             CNSAppTheme {
-                var currentPage by remember { mutableIntStateOf(0) }
+                var currentPage by remember { mutableIntStateOf(2) }
 
                 Box(
                     modifier = Modifier
