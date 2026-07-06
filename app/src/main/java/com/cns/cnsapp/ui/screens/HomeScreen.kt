@@ -1,5 +1,6 @@
 package com.cns.cnsapp.ui.screens
 
+import android.view.HapticFeedbackConstants
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -27,6 +28,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -34,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.cns.cnsapp.R
 import com.cns.cnsapp.ui.components.AnimatedWaveBackground
+import com.cns.cnsapp.ui.navigation.SubScreen
 import com.cns.cnsapp.ui.theme.CNSAppTheme
 import com.cns.cnsapp.ui.theme.GoogleSansFlex
 
@@ -47,6 +50,7 @@ private fun HomeScreenPreview() {
 
 @Composable
 fun HomeScreen(
+    onNavigate: (SubScreen) -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -191,11 +195,17 @@ fun HomeScreen(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            CollapsedCard(title = "Recent activities")
+            CollapsedCard(
+                title = "Recent activities",
+                onClick = { onNavigate(SubScreen.RecentActivities) },
+            )
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            CollapsedCard(title = "Connected Apps")
+            CollapsedCard(
+                title = "Connected Apps",
+                onClick = { onNavigate(SubScreen.ConnectedApps) },
+            )
 
             Spacer(modifier = Modifier.height(12.dp))
 
@@ -256,7 +266,12 @@ private fun ExtendedCollapsedCard(
 }
 
 @Composable
-private fun CollapsedCard(title: String) {
+private fun CollapsedCard(
+    title: String,
+    onClick: (() -> Unit)? = null,
+) {
+    val view = LocalView.current
+
     Card(
         modifier = Modifier
             .padding(horizontal = 0.dp)
@@ -269,6 +284,18 @@ private fun CollapsedCard(title: String) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
+                .then(
+                    if (onClick != null) {
+                        Modifier.clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null,
+                            onClick = {
+                                view.performHapticFeedback(HapticFeedbackConstants.CONFIRM)
+                                onClick()
+                            },
+                        )
+                    } else Modifier
+                )
                 .padding(start = 18.dp, end = 18.dp, top = 18.dp, bottom = 18.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,

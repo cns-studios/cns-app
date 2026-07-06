@@ -2,6 +2,7 @@ package com.cns.cnsapp
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -14,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -22,7 +24,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.cns.cnsapp.ui.components.NavFooter
+import com.cns.cnsapp.ui.navigation.SubScreen
+import com.cns.cnsapp.ui.screens.ConnectedAppsScreen
 import com.cns.cnsapp.ui.screens.HomeScreen
+import com.cns.cnsapp.ui.screens.RecentActivitiesScreen
 import com.cns.cnsapp.ui.theme.CNSAppTheme
 import com.cns.cnsapp.ui.theme.GoogleSansFlex
 
@@ -32,22 +37,45 @@ class MainActivity : ComponentActivity() {
         setContent {
             CNSAppTheme {
                 var currentPage by remember { mutableIntStateOf(2) }
+                var subScreen by remember { mutableStateOf<SubScreen?>(null) }
+
+                BackHandler(enabled = subScreen != null) {
+                    subScreen = null
+                }
 
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
                         .background(MaterialTheme.colorScheme.background)
                 ) {
-                    when (currentPage) {
-                        2 -> HomeScreen()
-                        else -> PlaceholderScreen()
+                    when (subScreen) {
+                        SubScreen.RecentActivities -> {
+                            RecentActivitiesScreen(
+                                onBack = { subScreen = null },
+                            )
+                        }
+                        SubScreen.ConnectedApps -> {
+                            ConnectedAppsScreen(
+                                onBack = { subScreen = null },
+                            )
+                        }
+                        null -> {
+                            when (currentPage) {
+                                2 -> HomeScreen(
+                                    onNavigate = { subScreen = it },
+                                )
+                                else -> PlaceholderScreen()
+                            }
+                        }
                     }
 
-                    NavFooter(
-                        activePage = currentPage,
-                        onPageSelected = { currentPage = it },
-                        modifier = Modifier.align(Alignment.BottomCenter),
-                    )
+                    if (subScreen == null) {
+                        NavFooter(
+                            activePage = currentPage,
+                            onPageSelected = { currentPage = it },
+                            modifier = Modifier.align(Alignment.BottomCenter),
+                        )
+                    }
                 }
             }
         }
