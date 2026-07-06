@@ -23,6 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.cns.cnsapp.R
+import com.cns.cnsapp.ui.components.AnimatedWaveBackground
 import com.cns.cnsapp.ui.theme.CNSAppTheme
 import com.cns.cnsapp.ui.theme.GoogleSansFlex
 
@@ -38,48 +39,56 @@ private fun HomeScreenPreview() {
 fun HomeScreen(
     modifier: Modifier = Modifier,
 ) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(start = 24.dp, end = 24.dp, top = 64.dp),
+    Box(
+        modifier = modifier.fillMaxSize(),
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.Top,
+        AnimatedWaveBackground(
+            modifier = Modifier.align(Alignment.TopCenter),
+        )
+
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(start = 24.dp, end = 24.dp, top = 64.dp),
         ) {
-            Column {
-                Text(
-                    text = "Welcome back,",
-                    fontFamily = GoogleSansFlex,
-                    fontSize = 25.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.onBackground,
-                )
-                Text(
-                    text = "Aaron",
-                    fontFamily = GoogleSansFlex,
-                    fontSize = 25.sp,
-                    fontWeight = FontWeight.ExtraBold,
-                    color = MaterialTheme.colorScheme.onBackground,
-                )
-            }
-            Box(
-                modifier = Modifier
-                    .size(72.dp)
-                    .clickable(
-                        interactionSource = remember { MutableInteractionSource() },
-                        indication = null,
-                        onClick = { },
-                    ),
-                contentAlignment = Alignment.TopCenter,
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.Top,
             ) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_settings),
-                    contentDescription = "Settings",
-                    tint = MaterialTheme.colorScheme.onBackground,
-                    modifier = Modifier.size(36.dp),
-                )
+                Column {
+                    Text(
+                        text = "Welcome back,",
+                        fontFamily = GoogleSansFlex,
+                        fontSize = 25.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        color = MaterialTheme.colorScheme.onBackground,
+                    )
+                    Text(
+                        text = "Aaron",
+                        fontFamily = GoogleSansFlex,
+                        fontSize = 25.sp,
+                        fontWeight = FontWeight.ExtraBold,
+                        color = MaterialTheme.colorScheme.onBackground,
+                    )
+                }
+                Box(
+                    modifier = Modifier
+                        .size(72.dp)
+                        .clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null,
+                            onClick = { },
+                        ),
+                    contentAlignment = Alignment.TopCenter,
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_settings),
+                        contentDescription = "Settings",
+                        tint = MaterialTheme.colorScheme.onBackground,
+                        modifier = Modifier.size(36.dp),
+                    )
+                }
             }
         }
     }
