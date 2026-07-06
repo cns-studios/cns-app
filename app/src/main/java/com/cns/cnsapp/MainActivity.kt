@@ -14,6 +14,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.cns.cnsapp.ui.components.NavFooter
+import com.cns.cnsapp.ui.screens.HomeScreen
 import com.cns.cnsapp.ui.theme.CNSAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -28,7 +29,7 @@ class MainActivity : ComponentActivity() {
                         .fillMaxSize()
                         .background(MaterialTheme.colorScheme.background)
                 ) {
-                    Box(modifier = Modifier.fillMaxSize())
+                    HomeScreen()
 
                     NavFooter(
                         activePage = currentPage,
