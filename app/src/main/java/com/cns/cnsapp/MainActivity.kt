@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.cns.cnsapp.ui.components.NavFooter
 import com.cns.cnsapp.ui.navigation.SubScreen
+import com.cns.cnsapp.ui.screens.ConfigureAccountScreen
 import com.cns.cnsapp.ui.screens.ConnectedAppsScreen
 import com.cns.cnsapp.ui.screens.HomeScreen
 import com.cns.cnsapp.ui.screens.NewRequestsScreen
@@ -62,6 +63,11 @@ class MainActivity : ComponentActivity() {
                         }
                         SubScreen.NewRequests -> {
                             NewRequestsScreen(
+                                onBack = { subScreen = null },
+                            )
+                        }
+                        SubScreen.ConfigureAccount -> {
+                            ConfigureAccountScreen(
                                 onBack = { subScreen = null },
                             )
                         }
