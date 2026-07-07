@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.sp
 import com.cns.cnsapp.ui.components.NavFooter
 import com.cns.cnsapp.ui.navigation.SubScreen
 import com.cns.cnsapp.ui.screens.AppSettingsScreen
+import com.cns.cnsapp.ui.screens.CalendarScreen
 import com.cns.cnsapp.ui.screens.ConfigureAccountScreen
 import com.cns.cnsapp.ui.screens.ConnectedAppsScreen
 import com.cns.cnsapp.ui.screens.HomeScreen
@@ -82,6 +83,7 @@ class MainActivity : ComponentActivity() {
                                 2 -> HomeScreen(
                                     onNavigate = { subScreen = it },
                                 )
+                                3 -> CalendarScreen()
                                 else -> PlaceholderScreen()
                             }
                         }
