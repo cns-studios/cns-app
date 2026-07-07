@@ -5,4 +5,5 @@ sealed class SubScreen {
     data object ConnectedApps : SubScreen()
     data object NewRequests : SubScreen()
     data object ConfigureAccount : SubScreen()
+    data object AppSettings : SubScreen()
 }

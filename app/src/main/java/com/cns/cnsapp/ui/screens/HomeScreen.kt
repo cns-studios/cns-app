@@ -92,7 +92,7 @@ fun HomeScreen(
                         .clickable(
                             interactionSource = remember { MutableInteractionSource() },
                             indication = null,
-                            onClick = { },
+                            onClick = { onNavigate(SubScreen.AppSettings) },
                         ),
                     contentAlignment = Alignment.TopCenter,
                 ) {
