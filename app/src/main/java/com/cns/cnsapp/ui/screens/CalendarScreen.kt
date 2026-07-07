@@ -165,6 +165,13 @@ fun CalendarScreen(
                 22..28,
             )
 
+            val dotDates = mapOf(
+                5 to Color(0xFF1E7297),
+                13 to Color(0xFF8A30F8),
+                20 to Color(0xFF1E7297),
+                27 to Color(0xFF8A30F8),
+            )
+
             weeks.forEachIndexed { weekIndex, days ->
                 Box(
                     modifier = Modifier
@@ -181,19 +188,39 @@ fun CalendarScreen(
                         .fillMaxWidth()
                         .padding(horizontal = 12.dp),
                     horizontalArrangement = Arrangement.SpaceEvenly,
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     days.forEach { date ->
+                        val dotColor = dotDates[date]
                         Box(
                             modifier = Modifier.width(32.dp),
                             contentAlignment = Alignment.Center,
                         ) {
-                            Text(
-                                text = date.toString(),
-                                fontFamily = GoogleSansFlex,
-                                fontSize = 16.sp,
-                                fontWeight = FontWeight.Normal,
-                                color = MaterialTheme.colorScheme.onBackground,
-                            )
+                            Column(
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.Top,
+                            ) {
+                                Text(
+                                    text = date.toString(),
+                                    fontFamily = GoogleSansFlex,
+                                    fontSize = 16.sp,
+                                    fontWeight = FontWeight.Normal,
+                                    color = MaterialTheme.colorScheme.onBackground,
+                                )
+                                Box(
+                                    modifier = Modifier.size(5.dp),
+                                    contentAlignment = Alignment.Center,
+                                ) {
+                                    if (dotColor != null) {
+                                        Box(
+                                            modifier = Modifier
+                                                .size(5.dp)
+                                                .clip(CircleShape)
+                                                .background(dotColor),
+                                        )
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -216,16 +243,20 @@ fun CalendarScreen(
                     .fillMaxWidth()
                     .padding(horizontal = 12.dp),
                 horizontalArrangement = Arrangement.SpaceEvenly,
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Box(
-                    modifier = Modifier.width(32.dp),
+                    modifier = Modifier
+                        .size(38.dp)
+                        .clip(CircleShape)
+                        .background(Color(0xFF0C2E5B)),
                     contentAlignment = Alignment.Center,
                 ) {
                     Text(
                         text = "29",
                         fontFamily = GoogleSansFlex,
                         fontSize = 16.sp,
-                        fontWeight = FontWeight.Normal,
+                        fontWeight = FontWeight.ExtraBold,
                         color = MaterialTheme.colorScheme.onBackground,
                     )
                 }
