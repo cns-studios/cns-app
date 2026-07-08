@@ -32,6 +32,7 @@ import com.cns.cnsapp.ui.screens.ConnectedAppsScreen
 import com.cns.cnsapp.ui.screens.HomeScreen
 import com.cns.cnsapp.ui.screens.NewRequestsScreen
 import com.cns.cnsapp.ui.screens.RecentActivitiesScreen
+import com.cns.cnsapp.ui.screens.ShareitScreen
 import com.cns.cnsapp.ui.theme.CNSAppTheme
 import com.cns.cnsapp.ui.theme.GoogleSansFlex
 
@@ -80,6 +81,7 @@ class MainActivity : ComponentActivity() {
                         }
                         null -> {
                             when (currentPage) {
+                                1 -> ShareitScreen()
                                 2 -> HomeScreen(
                                     onNavigate = { subScreen = it },
                                 )
