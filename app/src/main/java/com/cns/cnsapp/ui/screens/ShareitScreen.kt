@@ -122,8 +122,8 @@ fun ShareitScreen(
                     Text(
                         text = file["name"] as String,
                         fontFamily = GoogleSansFlex,
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 17.sp,
+                        fontWeight = FontWeight.Normal,
                         color = MaterialTheme.colorScheme.onBackground,
                     )
 
@@ -137,6 +137,7 @@ fun ShareitScreen(
                             text = "Expires in " + file["expire"] as String,
                             fontFamily = GoogleSansFlex,
                             fontSize = 14.sp,
+                            fontWeight = FontWeight.Light,
                             color = MaterialTheme.colorScheme.onBackground,
                         )
 
