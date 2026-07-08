@@ -126,7 +126,7 @@ fun ShareitApprovalScreen(
                 modifier = Modifier.width(32.dp),
                 color = MaterialTheme.colorScheme.onBackground,
                 strokeWidth = 3.dp,
-                trackColor = MaterialTheme.colorScheme.surface,
+                trackColor = MaterialTheme.colorScheme.background,
             )
 
             Spacer(modifier = Modifier.height(30.dp))
