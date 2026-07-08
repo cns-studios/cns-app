@@ -22,6 +22,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "CNS app"
+rootProject.name = "CNS App"
 include(":app")
  
