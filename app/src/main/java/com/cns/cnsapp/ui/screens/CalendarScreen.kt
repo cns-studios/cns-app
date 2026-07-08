@@ -55,6 +55,7 @@ private fun CalendarScreenPreview() {
 @Composable
 fun CalendarScreen(
     modifier: Modifier = Modifier,
+    onExpand: (() -> Unit)? = null,
 ) {
     val view = LocalView.current
 
@@ -62,7 +63,15 @@ fun CalendarScreen(
     val nextMonth = listOf(1, 2, 3, 4, 5)
 
     Box(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier
+            .fillMaxSize()
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null,
+            ) {
+                view.performHapticFeedback(HapticFeedbackConstants.CONFIRM)
+                onExpand?.invoke()
+            },
     ) {
         Column(
             modifier = Modifier

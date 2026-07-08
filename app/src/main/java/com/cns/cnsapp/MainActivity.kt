@@ -4,6 +4,14 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -26,6 +34,7 @@ import androidx.compose.ui.unit.sp
 import com.cns.cnsapp.ui.components.NavFooter
 import com.cns.cnsapp.ui.navigation.SubScreen
 import com.cns.cnsapp.ui.screens.AppSettingsScreen
+import com.cns.cnsapp.ui.screens.CalendarExtendedScreen
 import com.cns.cnsapp.ui.screens.CalendarScreen
 import com.cns.cnsapp.ui.screens.ConfigureAccountScreen
 import com.cns.cnsapp.ui.screens.ConnectedAppsScreen
@@ -43,6 +52,7 @@ class MainActivity : ComponentActivity() {
             CNSAppTheme {
                 var currentPage by remember { mutableIntStateOf(2) }
                 var subScreen by remember { mutableStateOf<SubScreen?>(null) }
+                var isCalendarExtended by remember { mutableStateOf(false) }
 
                 BackHandler(enabled = subScreen != null) {
                     subScreen = null
@@ -53,7 +63,12 @@ class MainActivity : ComponentActivity() {
                         .fillMaxSize()
                         .background(MaterialTheme.colorScheme.background)
                 ) {
-                    when (subScreen) {
+                    Crossfade(
+                        targetState = subScreen,
+                        animationSpec = tween(300),
+                        label = "subscreenTransition",
+                    ) { screen ->
+                    when (screen) {
                         SubScreen.RecentActivities -> {
                             RecentActivitiesScreen(
                                 onBack = { subScreen = null },
@@ -85,16 +100,60 @@ class MainActivity : ComponentActivity() {
                                 2 -> HomeScreen(
                                     onNavigate = { subScreen = it },
                                 )
-                                3 -> CalendarScreen()
+                                3 -> {
+                                    AnimatedContent(
+                                        targetState = isCalendarExtended,
+                                        transitionSpec = {
+                                            if (targetState) {
+                                                (fadeIn(animationSpec = tween(300)) + scaleIn(
+                                                    initialScale = 0.92f,
+                                                    animationSpec = tween(300),
+                                                )) togetherWith
+                                                    (fadeOut(animationSpec = tween(300)) + scaleOut(
+                                                        targetScale = 1.08f,
+                                                        animationSpec = tween(300),
+                                                    ))
+                                            } else {
+                                                (fadeIn(animationSpec = tween(300)) + scaleIn(
+                                                    initialScale = 1.08f,
+                                                    animationSpec = tween(300),
+                                                )) togetherWith
+                                                    (fadeOut(animationSpec = tween(300)) + scaleOut(
+                                                        targetScale = 0.92f,
+                                                        animationSpec = tween(300),
+                                                    ))
+                                            }
+                                        },
+                                        label = "calendarTransition",
+                                    ) { extended ->
+                                        if (extended) {
+                                            CalendarExtendedScreen(
+                                                onCollapse = {
+                                                    isCalendarExtended = false
+                                                },
+                                            )
+                                        } else {
+                                            CalendarScreen(
+                                                onExpand = {
+                                                    isCalendarExtended = true
+                                                },
+                                            )
+                                        }
+                                    }
+                                }
                                 else -> PlaceholderScreen()
                             }
                         }
+                    }
                     }
 
                     if (subScreen == null) {
                         NavFooter(
                             activePage = currentPage,
-                            onPageSelected = { currentPage = it },
+                            onPageSelected = {
+                                isCalendarExtended = false
+                                currentPage = it
+                            },
                             modifier = Modifier.align(Alignment.BottomCenter),
                         )
                     }
