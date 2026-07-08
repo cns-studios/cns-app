@@ -28,6 +28,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
@@ -218,7 +219,7 @@ fun CalendarExtendedScreen(
                     text = "Create Appointment",
                     fontFamily = GoogleSansFlex,
                     fontSize = 16.sp,
-                    fontWeight = FontWeight.Normal,
+                    fontWeight = FontWeight.Medium,
                     color = MaterialTheme.colorScheme.onSurface,
                 )
 
@@ -241,6 +242,17 @@ private fun DaySquare(
     isActive: Boolean = false,
     isNextMonth: Boolean = false,
 ) {
+    data class CalendarEvent(val name: String, val bgColor: Color, val mainColor: Color)
+
+    val events = mapOf(
+        5 to CalendarEvent("Yoga", Color(0xFF270F45), Color(0xFF8A30F8)),
+        13 to CalendarEvent("Swim", Color(0xFF152931), Color(0xFF1E7297)),
+        20 to CalendarEvent("Garden", Color(0xFF011D00), Color(0xFF097803)),
+        27 to CalendarEvent("Music", Color(0xFF382609), Color(0xFFB57A19)),
+    )
+
+    val event = if (!isNextMonth) events[date] else null
+
     Box(
         modifier = Modifier
             .width(48.dp)
@@ -250,21 +262,44 @@ private fun DaySquare(
                 else Modifier
             )
             .background(
-                MaterialTheme.colorScheme.surface,
+                if (event != null) event.bgColor else MaterialTheme.colorScheme.surface,
                 RoundedCornerShape(6.dp),
             ),
     ) {
-        Text(
-            text = date.toString(),
-            fontFamily = GoogleSansFlex,
-            fontSize = 16.sp,
-            fontWeight = if (isActive) FontWeight.ExtraBold else FontWeight.Normal,
-            color = if (isNextMonth) MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
-                    else MaterialTheme.colorScheme.onSurface,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 8.dp),
-            textAlign = TextAlign.Center,
-        )
+        Column(
+            modifier = Modifier.fillMaxSize(),
+        ) {
+            Text(
+                text = date.toString(),
+                fontFamily = GoogleSansFlex,
+                fontSize = 16.sp,
+                fontWeight = if (isActive) FontWeight.ExtraBold else FontWeight.Normal,
+                color = if (isNextMonth) MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
+                        else MaterialTheme.colorScheme.onSurface,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp),
+                textAlign = TextAlign.Center,
+            )
+            if (event != null) {
+                Spacer(modifier = Modifier.height(6.dp))
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 4.dp)
+                        .clip(RoundedCornerShape(4.dp))
+                        .background(event.mainColor)
+                        .padding(vertical = 1.dp, horizontal = 6.dp),
+                ) {
+                    Text(
+                        text = event.name,
+                        color = Color.White,
+                        fontSize = 9.sp,
+                        lineHeight = 9.sp,
+                        fontWeight = FontWeight.Medium,
+                    )
+                }
+            }
+        }
     }
 }
